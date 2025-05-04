@@ -470,9 +470,78 @@ img {
 
 .hero-visual img {
     max-width: 100%;
-    border-radius: 15px; /* Soften corners */
+    /* Removed border-radius for rectangular design */
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Deeper shadow */
+    /* Ensure image covers the container without distortion */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
+
+/* Flip Card Container */
+.flip-card {
+    background-color: transparent;
+    width: 350px; /* Set a fixed width for the card */
+    height: 450px; /* Set a fixed height for the card to make it rectangular */
+    perspective: 1000px; /* Remove if you don't want 3D */
+    margin: 0 auto; /* Center the flip card */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Apply shadow to the inner container */
+    border-radius: 8px; /* Optional: Add border-radius to the card container */
+    overflow: hidden; /* Hide overflow if border-radius is applied */
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+    display: flex; /* Use flexbox to center content */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack content vertically */
+}
+
+/* Style the front side (fallback background) */
+.flip-card-front {
+    background-color: var(--bg-light); /* Fallback background */
+    color: var(--text-dark);
+}
+
+/* Style the back side */
+.flip-card-back {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Gradient background */
+    color: white;
+    transform: rotateY(180deg);
+    padding: 20px; /* Add some padding */
+}
+.flip-card-back h4 {
+    color: white; /* Ensure text is white */
+    margin-bottom: 10px;
+}
+.flip-card-back p {
+    color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
 
 /* Scroll Down Arrow */
 .scroll-down-link {
@@ -535,12 +604,26 @@ img {
     height: 90%;
 }
 
-.about-image img {
-    border-radius: var(--border-radius);
-    box-shadow: 0 12px 35px var(--shadow-medium);
+.about-image {
+    width: 300px; /* Example size, adjust as needed */
+    height: 300px; /* Make it a square for a perfect circle */
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 3rem; /* Center the container and add space below */
+    box-shadow: 0 12px 35px var(--shadow-medium); /* Keep shadow on container */
     position: relative; /* To sit above the ::before element */
     z-index: 1;
 }
+
+.about-image img {
+    width: 100%; /* Ensure image fills the container */
+    height: 100%; /* Ensure image fills the container */
+    object-fit: cover; /* Zoom and crop the image to cover the container */
+    object-position: center; /* Center the image within the container */
+    border-radius: 0; /* Remove rounded corners from the image itself */
+    box-shadow: none; /* Remove shadow from the image itself */
+}
+
 .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
@@ -627,7 +710,7 @@ img {
 -------------------------*/
 .stats-section {
     /* Placeholder image - replace 'assets/stats-bg.jpg' */
-    background: linear-gradient(rgba(25, 25, 25, 0.85), rgba(25, 25, 25, 0.85)), url('assets/stats-bg-placeholder.jpg') no-repeat center center/cover;
+    background: linear-gradient(rgba(25, 25, 25, 0.85), rgba(25, 25, 25, 0.85)), url('images/stats-bg-placeholder.jpg') no-repeat center center/cover;
     background-attachment: fixed;
     padding: 80px 0;
     color: var(--bg-white);
@@ -747,16 +830,16 @@ img {
 
 
 /*-------------------------
-  8. Portfolio/Projects Section
+  8. Portfolio/Projects Section (Enhanced)
 -------------------------*/
 .portfolio-section {
-    background-color: var(--bg-white);
+    background-color: var(--bg-white); /* Keep white background */
 }
 
 /* Optional: Filter Buttons */
 .portfolio-filters {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem; /* More space below filters */
 }
 .portfolio-filters .btn-filter {
     background-color: transparent;
@@ -779,10 +862,15 @@ img {
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     color: var(--bg-white);
     border-color: var(--primary-color);
+    box-shadow: 0 3px 8px rgba(74, 0, 224, 0.2); /* Add shadow to active filter */
 }
 
 
 /* Assuming Bootstrap 5 row/col, gy-4 for gap */
+.portfolio-grid {
+    /* Add any grid-specific styles here if needed */
+}
+
 .portfolio-item {
     /* Margin handled by Bootstrap gutter (gy-4) */
 }
@@ -790,22 +878,24 @@ img {
 .portfolio-card {
     background-color: var(--bg-white);
     border-radius: var(--border-radius);
-    box-shadow: 0 6px 20px var(--shadow-light);
+    box-shadow: 0 8px 25px var(--shadow-light); /* More prominent initial shadow */
     overflow: hidden;
     transition: box-shadow var(--transition-speed) var(--transition-timing), transform var(--transition-speed) var(--transition-timing);
     height: 100%;
     display: flex;
     flex-direction: column; /* Ensure content pushes tags down */
+    border: 1px solid var(--border-color); /* Subtle border */
 }
 .portfolio-card:hover {
-    box-shadow: 0 12px 35px var(--shadow-medium);
-    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium); /* Deeper shadow on hover */
+    transform: translateY(-8px); /* More lift on hover */
 }
 
 .portfolio-image {
     position: relative;
     overflow: hidden;
-    height: 260px; /* Fixed height for consistent aspect appearance */
+    height: 280px; /* Slightly taller image area */
+    background-color: var(--bg-light); /* Placeholder background */
 }
 
 .portfolio-image img {
@@ -816,7 +906,7 @@ img {
     object-position: center; /* Center the image */
 }
 .portfolio-card:hover .portfolio-image img {
-    transform: scale(1.12); /* Slightly more zoom */
+    transform: scale(1.15); /* Slightly more zoom */
 }
 
 .portfolio-overlay {
@@ -825,13 +915,13 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(74, 0, 224, 0.7), rgba(142, 45, 226, 0.8)); /* Gradient overlay */
+    background: linear-gradient(135deg, rgba(74, 0, 224, 0.8), rgba(142, 45, 226, 0.9)); /* More opaque gradient overlay */
     opacity: 0;
     transition: opacity var(--transition-speed) var(--transition-timing);
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px; /* More space between icons */
+    gap: 25px; /* More space between icons */
 }
 .portfolio-card:hover .portfolio-overlay {
     opacity: 1;
@@ -839,32 +929,34 @@ img {
 
 .portfolio-overlay a {
     color: var(--bg-white);
-    font-size: 1.6rem; /* Larger icons */
-    width: 50px; /* Larger hit area */
-    height: 50px;
+    font-size: 1.8rem; /* Larger icons */
+    width: 55px; /* Larger hit area */
+    height: 55px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.15); /* More subtle background */
+    background-color: rgba(255, 255, 255, 0.2); /* More visible background */
     border-radius: 50%;
-    transition: background-color var(--transition-speed-fast) var(--transition-timing), transform 0.2s ease-out;
+    transition: background-color var(--transition-speed-fast) var(--transition-timing), transform 0.3s ease-out;
     text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow on icons */
 }
 .portfolio-overlay a:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.15); /* More pop */
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.2); /* More pop */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .portfolio-content {
-    padding: 25px 30px; /* More padding */
+    padding: 30px; /* Consistent padding */
     flex-grow: 1; /* Allow content to fill space */
     display: flex;
     flex-direction: column;
 }
 
 .portfolio-content h3 {
-    font-size: 1.35rem;
-    margin-bottom: 0.6rem;
+    font-size: 1.4rem; /* Slightly larger title */
+    margin-bottom: 0.8rem; /* Less space below title */
     font-weight: 600;
 }
 .portfolio-content h3 a {
@@ -877,47 +969,93 @@ img {
 }
 
 .portfolio-content p {
-    font-size: 0.9rem;
+    font-size: 0.95rem; /* Slightly larger description */
     color: var(--text-light);
-    margin-bottom: 1.2rem;
-    line-height: 1.6;
+    margin-bottom: 1.5rem; /* More space below description */
+    line-height: 1.7;
     flex-grow: 1; /* Take up available space */
 }
 
 .portfolio-tags {
     margin-top: auto; /* Push tags to the bottom */
-    padding-top: 10px; /* Space above tags */
+    padding-top: 15px; /* More space above tags */
+    border-top: 1px solid var(--border-color); /* Separator line */
 }
 .portfolio-tags span {
     display: inline-block;
     background-color: var(--bg-light);
-    color: var(--text-light);
-    font-size: 0.78rem; /* Slightly larger tags */
-    padding: 4px 12px; /* More padding */
-    border-radius: 15px;
-    margin-right: 6px;
-    margin-bottom: 6px;
+    color: var(--text-dark); /* Darker tag text */
+    font-size: 0.85rem; /* Larger tags */
+    padding: 5px 14px; /* More padding */
+    border-radius: 20px; /* More rounded */
+    margin-right: 8px; /* More space */
+    margin-bottom: 8px; /* More space */
     font-weight: 500;
+    border: 1px solid var(--border-color); /* Subtle border on tags */
+}
+.portfolio-tags span:last-child { margin-right: 0; } /* Remove margin from last tag */
+
+/* Optional: Modal styles if using Bootstrap Modals */
+.portfolio-modal .modal-content {
+    border-radius: var(--border-radius);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+.portfolio-modal .modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+.portfolio-modal .modal-title {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.portfolio-modal .modal-body img {
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+}
+.portfolio-modal .modal-body h6 {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+.portfolio-modal .modal-body ul {
+    padding-left: 20px;
+    color: var(--text-light);
+}
+.portfolio-modal .modal-body li {
+    margin-bottom: 5px;
+    line-height: 1.6;
+}
+.portfolio-modal .modal-footer {
+    border-top: 1px solid var(--border-color);
+}
+
+/* Responsive adjustments for Portfolio */
+@media (max-width: 767.98px) {
+    .portfolio-image { height: 200px; } /* Adjust height on smaller screens */
+    .portfolio-content { padding: 25px; }
+    .portfolio-content h3 { font-size: 1.3rem; }
+    .portfolio-content p { font-size: 0.9rem; }
+    .portfolio-tags span { font-size: 0.8rem; padding: 4px 10px; }
 }
 
 
 /*-------------------------
-  9. Experience Section (Timeline)
+  9. Experience Section (Timeline Enhanced)
 -------------------------*/
 .experience-section {
-    background-color: var(--bg-light);
+    background-color: var(--bg-light); /* Keep light background */
 }
 
 /* Assuming Bootstrap row/col for centering if needed */
 .timeline-container {
-    max-width: 900px; /* Limit timeline width */
+    max-width: 950px; /* Slightly wider timeline */
     margin: 0 auto;
 }
 
 .timeline {
     position: relative;
-    padding: 30px 0;
-    margin-left: 30px; /* Overall offset for the line */
+    padding: 40px 0; /* More vertical padding */
+    margin-left: 40px; /* Overall offset for the line */
 }
 
 .timeline::before {
@@ -925,54 +1063,55 @@ img {
     position: absolute;
     top: 0;
     left: 0; /* Position relative to .timeline */
-    width: 4px; /* Thicker line */
+    width: 5px; /* Thicker line */
     height: 100%;
-    background: linear-gradient(180deg, var(--accent-color), var(--secondary-color), var(--primary-color));
-    border-radius: 2px;
+    background: linear-gradient(180deg, var(--accent-color), var(--secondary-color), var(--primary-color)); /* Gradient line */
+    border-radius: 3px;
 }
 
 .timeline-item {
     position: relative;
-    margin-bottom: 50px; /* More space between items */
-    padding-left: 80px; /* Increased space for icon + gap */
+    margin-bottom: 60px; /* More space between items */
+    padding-left: 90px; /* Increased space for icon + gap */
 }
 .timeline-item:last-child { margin-bottom: 0; }
 
 .timeline-icon {
     position: absolute;
-    left: -30px; /* Move icon left to sit ON the line, adjust based on line thickness */
+    left: -35px; /* Move icon left to sit ON the line, adjust based on line thickness */
     top: 0;
-    width: 60px;
-    height: 60px;
+    width: 70px; /* Larger icon container */
+    height: 70px;
     background-color: var(--bg-light); /* Match section background */
-    border: 4px solid var(--primary-color); /* Thicker border */
+    border: 5px solid var(--primary-color); /* Thicker border */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2; /* Above the line */
-    font-size: 1.8rem; /* Larger icon */
+    font-size: 2rem; /* Larger icon */
     color: var(--primary-color);
     /* Cutout effect simulation */
-    box-shadow: 0 0 0 6px var(--bg-light);
-    transition: transform var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
+    box-shadow: 0 0 0 8px var(--bg-light); /* Larger cutout */
+    transition: transform var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing);
 }
 .timeline-item:hover .timeline-icon {
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(5deg); /* Scale and slight rotate */
     border-color: var(--secondary-color);
+    color: var(--secondary-color);
 }
 
 .timeline-content {
     background-color: var(--bg-white);
-    padding: 30px 35px; /* More padding */
+    padding: 35px 40px; /* More padding */
     border-radius: var(--border-radius);
-    box-shadow: 0 6px 20px var(--shadow-light);
+    box-shadow: 0 8px 25px var(--shadow-light); /* More prominent initial shadow */
     position: relative;
-    border-left: 5px solid var(--secondary-color); /* Thicker accent border */
+    border-left: 6px solid var(--secondary-color); /* Thicker accent border */
     transition: box-shadow var(--transition-speed) var(--transition-timing), border-left-color var(--transition-speed) var(--transition-timing);
 }
 .timeline-item:hover .timeline-content {
-    box-shadow: 0 10px 30px var(--shadow-medium);
+    box-shadow: 0 15px 40px var(--shadow-medium); /* Deeper shadow on hover */
     border-left-color: var(--primary-color);
 }
 
@@ -980,14 +1119,14 @@ img {
 .timeline-content::before {
     content: '';
     position: absolute;
-    top: 22px; /* Adjust vertical position */
-    left: -14px; /* Position depends on border-width + desired gap */
+    top: 25px; /* Adjust vertical position */
+    left: -16px; /* Position depends on border-width + desired gap */
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 12px 12px 12px 0; /* Triangle shape */
+    border-width: 14px 14px 14px 0; /* Larger triangle shape */
     border-color: transparent var(--bg-white) transparent transparent; /* Match content bg */
-    filter: drop-shadow(-2px 0px 1px rgba(0,0,0,0.03)); /* Subtle shadow */
+    filter: drop-shadow(-3px 0px 2px rgba(0,0,0,0.05)); /* More prominent shadow */
     transition: border-color var(--transition-speed) var(--transition-timing);
 }
 /* Optional: Change arrow color slightly on hover */
@@ -1000,30 +1139,30 @@ img {
     display: inline-block;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Gradient background */
     color: var(--bg-white);
-    font-size: 0.88rem;
+    font-size: 0.9rem; /* Slightly larger date */
     font-weight: 500;
-    padding: 5px 15px; /* More padding */
+    padding: 6px 18px; /* More padding */
     border-radius: 50px; /* Pill shape */
-    margin-bottom: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px; /* More space */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* More prominent shadow */
 }
 .timeline-content .date small { font-weight: 400; opacity: 0.9; }
 
 .timeline-content h3 {
-    font-size: 1.5rem; /* Larger title */
     color: var(--text-dark);
-    margin-bottom: 0.4rem;
+    font-size: 1.6rem; /* Larger title */
+    margin-bottom: 1.2rem; /* More space below title */
     font-weight: 600;
 }
 
 .timeline-content .company {
-    font-size: 1.05rem;
+    font-size: 1.1rem; /* Slightly larger company name */
     font-weight: 500;
     color: var(--secondary-color);
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.5rem; /* More space below company */
     display: block;
 }
-.timeline-content .company i { margin-right: 5px; } /* Add icon support */
+.timeline-content .company i { margin-right: 8px; color: var(--accent-color); } /* Add icon support and color */
 
 .timeline-content ul {
     list-style: none;
@@ -1032,11 +1171,11 @@ img {
     color: var(--text-light);
 }
 .timeline-content li {
-    margin-bottom: 10px; /* More space */
-    line-height: 1.8; /* Better readability */
+    margin-bottom: 12px; /* More space */
+    line-height: 1.9; /* Better readability */
     position: relative;
-    padding-left: 25px; /* Space for icon */
-    font-size: 0.95rem;
+    padding-left: 30px; /* More space for icon */
+    font-size: 1rem; /* Slightly larger list items */
 }
 .timeline-content li::before {
     content: '\f058'; /* Font Awesome check-circle (solid) */
@@ -1044,9 +1183,9 @@ img {
     font-weight: 900;
     position: absolute;
     left: 0;
-    top: 5px; /* Adjust vertical alignment */
+    top: 6px; /* Adjust vertical alignment */
     color: var(--accent-color);
-    font-size: 1rem; /* Larger check icon */
+    font-size: 1.1rem; /* Larger check icon */
 }
 
 
@@ -1054,7 +1193,7 @@ img {
   10. Skills Section (Enhanced)
 -------------------------*/
 .skills-section {
-    background-color: var(--bg-white);
+    background-color: var(--bg-white); /* Keep white background */
 }
 
 /* Assuming Bootstrap 5 row/col structure */
@@ -1063,69 +1202,69 @@ img {
 }
 
 .skills-subtitle {
-    font-size: 1.6rem; /* Larger subtitle */
+    font-size: 1.7rem; /* Larger subtitle */
     font-weight: 600;
     color: var(--text-dark);
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem; /* More space */
     position: relative;
-    padding-bottom: 12px;
+    padding-bottom: 15px; /* More padding for underline */
 }
 .skills-subtitle::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 45px;
-    height: 4px; /* Thicker underline */
+    width: 50px; /* Wider underline */
+    height: 5px; /* Thicker underline */
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
 .skill-item {
-    margin-bottom: 2.2rem; /* More space */
+    margin-bottom: 2.5rem; /* More space */
 }
 
 .skill-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px; /* More space */
 }
 
 .skill-name {
     font-weight: 600; /* Bolder skill name */
     color: var(--text-dark);
-    font-size: 1.05rem;
+    font-size: 1.1rem; /* Slightly larger skill name */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px; /* More space */
 }
 .skill-name i {
     color: var(--primary-color);
-    font-size: 1.2em;
-    opacity: 0.8;
+    font-size: 1.3em; /* Larger icon */
+    opacity: 0.9;
 }
 .skill-percentage {
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.95rem; /* Slightly larger percentage */
     color: var(--text-light);
 }
 
 .progress {
-    height: 12px; /* Thicker progress bar */
+    height: 14px; /* Thicker progress bar */
     background-color: #e9ecef;
-    border-radius: 6px; /* Match height/2 */
+    border-radius: 7px; /* Match height/2 */
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06); /* Inner shadow */
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.08); /* More prominent inner shadow */
 }
 
 .progress-bar { /* The fill element, width set via JS */
     height: 100%;
     width: 0; /* Start at 0, JS/CSS animates this */
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    border-radius: 6px;
-    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth ease-out */
+    border-radius: 7px;
+    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother ease-out */
     display: block;
     position: relative; /* For potential effects */
 }
@@ -1137,28 +1276,28 @@ img {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.1)); /* More visible shine */
 }
 
 /* Soft Skills List */
 .soft-skills-list {
     list-style: none;
     padding: 0;
-    margin-top: 1rem; /* Space above list */
+    margin-top: 1.5rem; /* More space above list */
 }
 .soft-skills-list li {
-    margin-bottom: 14px; /* More space */
+    margin-bottom: 16px; /* More space */
     color: var(--text-dark); /* Slightly darker text */
     display: flex;
     align-items: center;
-    font-size: 1rem;
+    font-size: 1.05rem; /* Slightly larger */
     font-weight: 500;
 }
 .soft-skills-list i {
     color: var(--accent-color);
-    margin-right: 15px; /* More space */
-    font-size: 1.2rem; /* Larger icon */
-    width: 22px;
+    margin-right: 18px; /* More space */
+    font-size: 1.3rem; /* Larger icon */
+    width: 25px; /* Wider container */
     text-align: center;
     flex-shrink: 0;
 }
@@ -1167,60 +1306,61 @@ img {
 .tools-icons {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px 30px; /* More row and column gap */
-    margin-top: 1.5rem;
+    gap: 30px 35px; /* More row and column gap */
+    margin-top: 2rem; /* More space */
     justify-content: flex-start; /* Align left */
 }
 .tools-icons i {
-    font-size: 2.8rem; /* Larger tool icons */
+    font-size: 3rem; /* Larger tool icons */
     color: var(--text-light);
-    opacity: 0.8;
+    opacity: 0.85;
     transition: color var(--transition-speed-fast) var(--transition-timing), transform var(--transition-speed-fast) var(--transition-timing), opacity var(--transition-speed-fast) var(--transition-timing);
 }
 .tools-icons i:hover {
     color: var(--primary-color);
-    transform: scale(1.2); /* More pop */
+    transform: scale(1.25) rotate(5deg); /* More pop and slight rotate */
     opacity: 1;
 }
 
 
 /*-------------------------
-  11. Certifications Section
+  11. Certifications Section (Enhanced)
 -------------------------*/
 .certifications-section {
-    background-color: var(--bg-light);
+    background-color: var(--bg-light); /* Keep light background */
 }
 
 /* Assuming Bootstrap 5 row/col, gy-4 */
 .certification-item {
     background-color: var(--bg-white);
-    padding: 25px 30px; /* More padding */
+    padding: 30px 35px; /* More padding */
     border-radius: var(--border-radius);
-    box-shadow: 0 5px 18px var(--shadow-light);
+    box-shadow: 0 8px 25px var(--shadow-light); /* More prominent initial shadow */
     display: flex;
     align-items: center;
     transition: transform var(--transition-speed) var(--transition-timing),
                 box-shadow var(--transition-speed) var(--transition-timing),
                 border-left-color var(--transition-speed) var(--transition-timing);
-    border-left: 5px solid var(--secondary-color); /* Thicker accent */
+    border-left: 6px solid var(--secondary-color); /* Thicker accent */
     height: 100%;
 }
 .certification-item:hover {
-     transform: translateY(-6px) scale(1.02); /* Lift and slight scale */
-     box-shadow: 0 10px 25px var(--shadow-medium);
+     transform: translateY(-8px) scale(1.03); /* More lift and slight scale */
+     box-shadow: 0 15px 40px var(--shadow-medium); /* Deeper shadow on hover */
      border-left-color: var(--primary-color);
 }
 
 .certification-item .icon {
-    font-size: 2.2rem; /* Larger icon */
+    font-size: 2.5rem; /* Larger icon */
     color: var(--secondary-color);
-    margin-right: 25px; /* More space */
-    min-width: 40px;
+    margin-right: 30px; /* More space */
+    min-width: 50px; /* Wider container */
     text-align: center;
-    transition: color var(--transition-speed) var(--transition-timing);
+    transition: color var(--transition-speed) var(--transition-timing), transform var(--transition-speed) var(--transition-timing);
 }
 .certification-item:hover .icon {
     color: var(--primary-color);
+    transform: scale(1.1); /* Scale icon on hover */
 }
 
 .certification-details {
@@ -1230,44 +1370,45 @@ img {
 .certification-item p {
     margin: 0;
     color: var(--text-dark);
-    line-height: 1.5;
+    line-height: 1.6; /* More line height */
     font-weight: 600; /* Bolder title */
-    font-size: 1.05rem;
+    font-size: 1.1rem; /* Slightly larger title */
 }
 
 .certification-item .issuer {
     color: var(--text-light);
     font-weight: 500; /* Slightly bolder issuer */
     display: block;
-    font-size: 0.9rem;
-    margin-top: 5px; /* More space */
+    font-size: 0.95rem; /* Slightly larger issuer */
+    margin-top: 8px; /* More space */
 }
-.certification-item .issuer i { margin-right: 5px; } /* Add icon support */
+.certification-item .issuer i { margin-right: 8px; color: var(--accent-color); } /* Add icon support and color */
 
 
 /*-------------------------
-  12. Education Section (Tabs)
+  12. Education Section (Tabs Enhanced)
 -------------------------*/
 .education-section {
-    background-color: var(--bg-white);
+    background-color: var(--bg-white); /* Keep white background */
 }
 
 .education-container {
-    max-width: 950px; /* Slightly wider */
+    max-width: 1000px; /* Slightly wider */
     margin: 0 auto;
     background-color: var(--bg-light);
-    padding: 40px 50px; /* More padding */
+    padding: 50px 60px; /* More padding */
     border-radius: var(--border-radius);
-    box-shadow: 0 8px 25px var(--shadow-light);
-    /* border-top: 5px solid var(--primary-color); */ /* Optional top border */
+    box-shadow: 0 10px 30px var(--shadow-light); /* More prominent shadow */
+    border-top: 6px solid var(--primary-color); /* Prominent top border */
 }
 
 /* Assuming Bootstrap 5 Tabs JS/HTML structure */
 .education-tabs { /* ul */
     border-bottom: 2px solid var(--border-color);
-    margin-bottom: 40px; /* More space */
+    margin-bottom: 50px; /* More space */
     display: flex; /* Allow wrapping */
     flex-wrap: wrap;
+    justify-content: center; /* Center tabs */
 }
 
 .education-tabs .nav-item { /* li */
@@ -1276,23 +1417,23 @@ img {
 
 .education-tabs .nav-link { /* button */
     border: none;
-    border-bottom: 3px solid transparent; /* Thicker indicator */
-    padding: 15px 30px; /* More padding */
-    font-size: 1.1rem; /* Larger tab text */
+    border-bottom: 4px solid transparent; /* Thicker indicator */
+    padding: 18px 35px; /* More padding */
+    font-size: 1.15rem; /* Larger tab text */
     font-weight: 500;
     color: var(--text-light);
     transition: color var(--transition-speed-fast) var(--transition-timing), border-color var(--transition-speed-fast) var(--transition-timing);
     background-color: transparent;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px; /* More space */
     cursor: pointer;
     white-space: nowrap; /* Prevent text wrapping */
-    margin-right: 5px; /* Space between tabs */
+    margin: 0 8px -2px; /* Space between tabs and align bottom */
 }
 .education-tabs .nav-link i {
     transition: color var(--transition-speed-fast) var(--transition-timing);
-    font-size: 1.1em;
+    font-size: 1.2em; /* Larger icon */
 }
 
 .education-tabs .nav-link:hover {
@@ -1312,81 +1453,86 @@ img {
 
 .education-content .tab-pane {
     display: none;
-    animation: fadeIn 0.5s ease-in-out forwards; /* Ensure it stays visible */
+    animation: fadeIn 0.6s ease-in-out forwards; /* Slightly slower animation */
 }
 .education-content .tab-pane.active.show {
     display: block;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(15px); } /* More pronounced slide up */
   to { opacity: 1; transform: translateY(0); }
 }
 
 .education-item {
-     padding-top: 10px; /* Less top padding */
+     padding-top: 20px; /* Adjusted padding for consistency */
+     padding-bottom: 20px; /* Added bottom padding */
+     border-bottom: 1px dashed var(--border-color); /* Dashed separator */
+     margin-bottom: 20px; /* Space below item */
 }
+.education-item:last-child { border-bottom: none; margin-bottom: 0; } /* No border/margin on last item */
+
 
 .education-item h3 {
     color: var(--text-dark);
-    font-size: 1.5rem; /* Larger degree name */
-    margin-bottom: 0.6rem;
+    font-size: 1.6rem; /* Larger degree name */
+    margin-bottom: 0.8rem; /* Less space below title */
     font-weight: 600;
 }
 .education-item .institution {
     font-weight: 600;
     color: var(--secondary-color);
-    margin-bottom: 0.6rem;
-    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem; /* Slightly larger */
 }
 .education-item .duration {
-    font-size: 0.95rem;
+    font-size: 1rem; /* Slightly larger */
     color: var(--text-light);
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem; /* More space */
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px; /* More space */
     font-style: italic;
 }
 .education-item .duration i {
     color: var(--accent-color);
-    font-size: 1em;
+    font-size: 1.1em; /* Larger icon */
 }
 
 .education-item .score {
     font-weight: 500;
     color: var(--text-dark);
-    margin-bottom: 1.2rem;
-    font-size: 1rem;
+    margin-bottom: 1.5rem; /* More space */
+    font-size: 1.05rem; /* Slightly larger */
 }
 .education-item .score strong { font-weight: 600; }
 
 .education-item .description {
      color: var(--text-light);
-     line-height: 1.8;
-     font-size: 0.95rem;
+     line-height: 1.9; /* More line height */
+     font-size: 1rem; /* Slightly larger */
 }
 
 
 /*-------------------------
-  13. Testimonials Section
+  13. Testimonials Section (Enhanced)
 -------------------------*/
 .testimonials-section {
-    background-color: var(--bg-light);
+    background-color: var(--bg-light); /* Keep light background */
 }
 
 .testimonial-slider-wrapper { /* Optional wrapper for padding/styling */
-    max-width: 850px;
+    max-width: 900px; /* Slightly wider */
     margin: 0 auto;
     position: relative;
-    padding: 0 40px; /* Space for nav arrows if outside */
+    padding: 0 50px; /* More space for nav arrows if outside */
 }
 
 /* Add styles for your specific slider (e.g., Swiper, Owl Carousel) */
 /* Example for general structure */
 .testimonial-item {
     text-align: center;
-    padding: 10px; /* Padding for spacing between items */
+    padding: 15px; /* More padding for spacing between items */
     cursor: grab; /* Indicate draggable */
 }
 .testimonial-item:active { cursor: grabbing; }
@@ -1397,43 +1543,43 @@ img {
 
 .testimonial-quote {
     background-color: var(--bg-white);
-    padding: 40px 50px; /* More padding */
+    padding: 45px 55px; /* More padding */
     border-radius: var(--border-radius);
-    box-shadow: 0 8px 25px var(--shadow-light);
-    margin-bottom: 25px;
+    box-shadow: 0 10px 30px var(--shadow-light); /* More prominent initial shadow */
+    margin-bottom: 30px; /* More space */
     position: relative;
     font-style: italic;
     color: var(--text-light);
-    line-height: 1.9; /* More line height */
-    font-size: 1.05rem; /* Slightly larger quote */
-    /* border-top: 4px solid var(--accent-color); */ /* Optional accent */
+    line-height: 2; /* More line height */
+    font-size: 1.1rem; /* Slightly larger quote */
+    border-top: 5px solid var(--accent-color); /* Prominent accent */
 }
 
 .quote-icon-left, .quote-icon-right {
     color: var(--primary-color);
-    font-size: 2rem; /* Larger quote icons */
-    opacity: 0.3; /* More subtle */
+    font-size: 2.5rem; /* Larger quote icons */
+    opacity: 0.2; /* More subtle */
     position: absolute;
     line-height: 1; /* Prevent extra space */
 }
-.quote-icon-left { top: 20px; left: 25px; }
-.quote-icon-right { bottom: 20px; right: 25px; }
+.quote-icon-left { top: 25px; left: 30px; }
+.quote-icon-right { bottom: 25px; right: 30px; }
 
 .testimonial-author {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px; /* More space */
-    margin-top: 10px;
+    gap: 25px; /* More space */
+    margin-top: 15px;
 }
 
 .author-img {
-    width: 70px; /* Larger image */
-    height: 70px;
+    width: 80px; /* Larger image */
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--bg-white); /* Thicker border */
-    box-shadow: 0 3px 8px var(--shadow-medium); /* More prominent shadow */
+    border: 5px solid var(--bg-white); /* Thicker border */
+    box-shadow: 0 5px 15px var(--shadow-medium); /* More prominent shadow */
 }
 
 .author-details {
@@ -1441,14 +1587,14 @@ img {
 }
 
 .author-name {
-    font-size: 1.15rem;
+    font-size: 1.25rem; /* Larger name */
     font-weight: 600;
     color: var(--text-dark);
-    margin: 0 0 4px 0;
+    margin: 0 0 5px 0;
 }
 
 .author-title {
-    font-size: 0.9rem;
+    font-size: 0.95rem; /* Slightly larger title */
     color: var(--text-light);
     margin: 0;
 }
@@ -1456,7 +1602,7 @@ img {
 /* Example Swiper Pagination/Navigation Styles (Adapt as needed) */
 .swiper-pagination-bullet {
     background-color: var(--secondary-color);
-    opacity: 0.5;
+    opacity: 0.6;
     transition: opacity var(--transition-speed-fast) ease, background-color var(--transition-speed-fast) ease;
 }
 .swiper-pagination-bullet-active {
@@ -1466,31 +1612,33 @@ img {
 .swiper-button-next,
 .swiper-button-prev {
     color: var(--primary-color);
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.8); /* More opaque background */
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    width: 50px; /* Larger buttons */
+    height: 50px;
     transition: background-color var(--transition-speed-fast) ease, color var(--transition-speed-fast) ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
     background-color: var(--primary-color);
     color: var(--bg-white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 .swiper-button-next::after,
 .swiper-button-prev::after {
-    font-size: 1.2rem; /* Adjust arrow size */
+    font-size: 1.3rem; /* Adjust arrow size */
     font-weight: bold;
 }
 
 
 /*-------------------------
-  14. Resume CTA Section
+  14. Resume CTA Section (Enhanced)
 -------------------------*/
 .resume-cta-section {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--bg-white);
-    padding: 100px 0; /* More padding */
+    padding: 120px 0; /* More padding */
     text-align: center;
 }
 
@@ -1544,7 +1692,8 @@ img {
   15. Contact Section (Enhanced)
 -------------------------*/
 .contact-section {
-    background-color: var(--bg-white);
+    /* Subtle gradient background similar to Hero */
+    background: linear-gradient(135deg, var(--bg-white) 60%, #f0eaff 100%); /* Using a light purple tint */
 }
 
 /* Assuming Bootstrap 5 row/col, gy-4 */
@@ -1556,13 +1705,18 @@ img {
 }
 
 .contact-info, .contact-form {
-    background-color: var(--bg-light);
+    background-color: var(--bg-white); /* Use white background for cards */
     padding: 40px; /* More padding */
     border-radius: var(--border-radius);
     height: 100%;
     box-shadow: 0 8px 25px var(--shadow-light);
     display: flex;
     flex-direction: column; /* Align content vertically */
+    transition: all var(--transition-speed) var(--transition-timing); /* Ensure transition is present */
+}
+.contact-info:hover, .contact-form:hover {
+    box-shadow: 0 12px 35px var(--shadow-medium);
+    transform: translateY(-5px);
 }
 
 .contact-info { border-top: 5px solid var(--primary-color); }
@@ -1573,26 +1727,34 @@ img {
     display: flex;
     align-items: flex-start;
     margin-bottom: 30px; /* More space */
+    transition: all var(--transition-speed-fast) var(--transition-timing); /* Add transition */
 }
 .info-item:last-child { margin-bottom: 0; }
+.info-item:hover {
+    transform: translateX(5px); /* Subtle slide effect */
+    /* Optional: Add a subtle shadow on hover if desired */
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); */
+}
 
 .info-item i {
     font-size: 1.6rem; /* Larger icon */
     color: var(--primary-color);
     width: 50px; /* Larger container */
     height: 50px;
-    background-color: rgba(74, 0, 224, 0.1);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Gradient background for icons */
+    color: var(--bg-white); /* White icon color */
     border-radius: 50%;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     margin-right: 20px; /* More space */
     flex-shrink: 0;
-    transition: background-color var(--transition-speed-fast) var(--transition-timing), color var(--transition-speed-fast) var(--transition-timing);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: all var(--transition-speed) var(--transition-timing); /* Add transition */
 }
 .info-item:hover i {
-    background-color: var(--primary-color);
-    color: var(--bg-white);
+    transform: scale(1.1); /* Scale icon on hover */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
 }
 
 .info-item-content {
@@ -1603,7 +1765,7 @@ img {
     font-size: 1.2rem; /* Larger heading */
     font-weight: 600;
     color: var(--text-dark);
-    margin: 0 0 6px 0;
+    margin: 0 0 10px 0; /* Standardized margin */
 }
 .info-item p, .info-item a {
     font-size: 1rem; /* Standard text size */
@@ -1642,22 +1804,22 @@ img {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 36px; /* Larger icons */
-    height: 36px;
-    background-color: transparent;
-    color: var(--text-light);
-    border: 1px solid var(--border-color);
+    width: 42px; /* Match Hero social icon size */
+    height: 42px; /* Match Hero social icon size */
+    background-color: rgba(0, 0, 0, 0.05); /* Match Hero social icon background */
+    color: var(--text-light); /* Match Hero social icon color */
     border-radius: 50%;
-    margin-right: 12px;
-    font-size: 1rem;
+    margin-right: 15px; /* Match Hero social icon spacing */
+    font-size: 1.2rem; /* Match Hero social icon size */
     transition: all var(--transition-speed) var(--transition-timing);
     text-decoration: none;
 }
 .contact-social a:hover {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: var(--bg-white);
-    transform: translateY(-3px);
+    background-color: var(--primary-color); /* Match Hero social icon hover background */
+    color: var(--bg-white); /* Match Hero social icon hover color */
+    transform: translateY(-4px) scale(1.05); /* Match Hero social icon hover effect */
+    box-shadow: 0 5px 12px rgba(74, 0, 224, 0.35); /* Match Hero social icon hover shadow */
+    border: none; /* Remove border on hover */
 }
 
 /* Contact Form Styling */
